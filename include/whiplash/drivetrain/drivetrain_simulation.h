@@ -2,7 +2,6 @@
 
 #include <box2d/box2d.h>
 #include "whiplash/drivetrain/config/drivetrain_simulation_config.h"
-#include "whiplash/drivetrain/wheel_module_simulation.h"
 
 namespace whiplash
 {
@@ -19,6 +18,9 @@ namespace whiplash
 
             DrivetrainSimulation(const DrivetrainSimulation &) = delete;
             DrivetrainSimulation &operator=(const DrivetrainSimulation &) = delete;
+
+            DrivetrainSimulation(DrivetrainSimulation &&) = default;
+            DrivetrainSimulation &operator=(DrivetrainSimulation &&) = default;
 
             b2WorldTransform getTransform();
 
@@ -39,8 +41,6 @@ namespace whiplash
 
             DrivetrainSimulationConfig config;
             b2BodyId bodyId;
-
-            std::vector<WheelModuleSimulation> wheelModules;
         };
 
     } // namespace drivetrain

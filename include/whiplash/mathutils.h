@@ -21,5 +21,21 @@ namespace whiplash
             return flippedPositions;
         }
 
+        constexpr float applyDeadband(float value, float deadband, float maxMagnitude)
+        {
+            if (std::abs(value) < deadband)
+            {
+                return 0.0f;
+            }
+            else if (value > 0.0f)
+            {
+                return (1.0f + deadband / (maxMagnitude - deadband)) * (value - deadband);
+            }
+            else
+            {
+                return (1.0f + deadband / (maxMagnitude - deadband)) * (value + deadband);
+            }
+        }
+
     } // namespace math
 } // namespace whiplash

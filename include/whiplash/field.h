@@ -16,6 +16,9 @@ namespace whiplash
         Field(const Field &) = delete;
         Field &operator=(const Field &) = delete;
 
+        Field(Field &&) = default;
+        Field &operator=(Field &&) = default;
+
         static constexpr int SIMULATION_SUB_TICKS_IN_1_PERIOD = 5;
 
         static int getSimulationSubTicksIn1Period()

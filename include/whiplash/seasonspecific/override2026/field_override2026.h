@@ -12,6 +12,9 @@ namespace whiplash
         FieldOverride2026(const FieldOverride2026 &) = delete;
         FieldOverride2026 &operator=(const FieldOverride2026 &) = delete;
 
+        FieldOverride2026(FieldOverride2026 &&) = default;
+        FieldOverride2026 &operator=(FieldOverride2026 &&) = default;
+
     private:
         void createGoalShape(b2Vec2 center);
     };

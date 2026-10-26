@@ -1,6 +1,9 @@
 #pragma once
 
 #include <box2d/box2d.h>
+#include <span>
+#include <vector>
+#include "whiplash/drivetrain/config/wheel_module_simulation_config.h"
 
 namespace whiplash
 {
@@ -14,12 +17,21 @@ namespace whiplash
             WheelModuleSimulation(const WheelModuleSimulation &) = delete;
             WheelModuleSimulation &operator=(const WheelModuleSimulation &) = delete;
 
-            virtual void simulationSubTick(int subTickNum) = 0;
+            WheelModuleSimulation(WheelModuleSimulation &&) = default;
+            WheelModuleSimulation &operator=(WheelModuleSimulation &&) = default;
+
+            virtual std::vector<b2Vec2> updateAndGetWheelForces(std::span<b2Vec2> currentWheelGroundWorldVelocities, b2Rot robotRotation, std::span<float> wheelGravityForces) = 0;
+
+            WheelModuleSimulationConfig getConfig() const
+            {
+                return config;
+            }
 
         protected:
-            WheelModuleSimulation(b2WorldTransform initialTransform);
+            WheelModuleSimulation(WheelModuleSimulationConfig config, std::span<b2Transform> wheelTransforms);
 
-            b2BodyId bodyId;
+            WheelModuleSimulationConfig config;
+            std::vector<b2Transform> wheelTransforms;
         };
 
     } // namespace drivetrain
