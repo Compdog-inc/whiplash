@@ -2,6 +2,7 @@
 
 #include <box2d/box2d.h>
 #include "whiplash/drivetrain/config/drivetrain_simulation_config.h"
+#include "whiplash/drivetrain/wheel_module_simulation.h"
 
 namespace whiplash
 {
@@ -24,14 +25,22 @@ namespace whiplash
             b2Vec2 getLinearVelocity();
             float getAngularVelocity();
 
+            void setTransform(b2Pos position, b2Rot rotation);
+
             virtual void simulationSubTick(int subTickNum) = 0;
+
+            b2BodyId getBodyId()
+            {
+                return bodyId;
+            }
 
         protected:
             DrivetrainSimulation(b2WorldId world, DrivetrainSimulationConfig config, b2WorldTransform initialTransform);
 
             DrivetrainSimulationConfig config;
             b2BodyId bodyId;
-            b2ShapeId frameShapeId;
+
+            std::vector<WheelModuleSimulation> wheelModules;
         };
 
     } // namespace drivetrain

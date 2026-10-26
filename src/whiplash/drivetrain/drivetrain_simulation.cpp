@@ -23,7 +23,7 @@ namespace whiplash
             shapeDef.material.restitution = FRAME_COEFFICIENT_OF_RESTITUTION;
 
             b2Polygon box = b2MakeBox(config.frameLengthX / 2.0f, config.frameWidthY / 2.0f);
-            frameShapeId = b2CreatePolygonShape(bodyId, &shapeDef, &box);
+            b2CreatePolygonShape(bodyId, &shapeDef, &box);
         }
 
         DrivetrainSimulation::~DrivetrainSimulation()
@@ -47,6 +47,11 @@ namespace whiplash
         float DrivetrainSimulation::getAngularVelocity()
         {
             return b2Body_GetAngularVelocity(bodyId);
+        }
+
+        void DrivetrainSimulation::setTransform(b2Pos position, b2Rot rotation)
+        {
+            b2Body_SetTransform(bodyId, position, rotation);
         }
 
     } // namespace drivetrain

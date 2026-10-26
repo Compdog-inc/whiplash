@@ -14,7 +14,7 @@ namespace whiplash
             float frameWidthY;
             float frameLengthX;
 
-            std::vector<WheelModuleSimulationConfig> wheelConfigs;
+            std::vector<WheelModuleSimulationConfig> moduleConfigs;
             std::vector<b2Transform> wheelTransforms;
         };
 

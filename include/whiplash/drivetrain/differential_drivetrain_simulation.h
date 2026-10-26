@@ -16,6 +16,11 @@ namespace whiplash
             DifferentialDrivetrainSimulation &operator=(const DifferentialDrivetrainSimulation &) = delete;
 
             void simulationSubTick(int subTickNum) override;
+
+        private:
+            void applyFrictionForce();
+            void applyFrictionTorque();
+            void applyModuleForces();
         };
 
     } // namespace drivetrain
