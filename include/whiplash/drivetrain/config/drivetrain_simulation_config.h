@@ -1,8 +1,11 @@
 #pragma once
 
+#include <memory>
 #include <box2d/box2d.h>
 #include <vector>
 #include "wheel_module_simulation_config.h"
+
+#include "whiplash/motor/motorcontroller.h"
 
 namespace whiplash
 {
@@ -16,6 +19,7 @@ namespace whiplash
 
             std::vector<WheelModuleSimulationConfig> moduleConfigs;
             std::vector<b2Transform> wheelTransforms;
+            std::vector<std::unique_ptr<motor::MotorController>> motorControllers;
         };
 
     } // namespace drivetrain

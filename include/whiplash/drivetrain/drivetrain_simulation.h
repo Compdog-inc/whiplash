@@ -37,7 +37,7 @@ namespace whiplash
             }
 
         protected:
-            DrivetrainSimulation(b2WorldId world, DrivetrainSimulationConfig config, b2WorldTransform initialTransform);
+            DrivetrainSimulation(b2WorldId world, DrivetrainSimulationConfig &&config, b2WorldTransform initialTransform);
 
             DrivetrainSimulationConfig config;
             b2BodyId bodyId;

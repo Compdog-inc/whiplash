@@ -1,6 +1,11 @@
 #pragma once
 
+#include <memory>
+#include <vector>
+#include <span>
+
 #include "wheel_module_simulation.h"
+#include "whiplash/motor/motorcontroller.h"
 
 namespace whiplash
 {
@@ -9,7 +14,10 @@ namespace whiplash
         class FixedWheelModuleSimulation : public WheelModuleSimulation
         {
         public:
-            FixedWheelModuleSimulation(WheelModuleSimulationConfig config, std::span<b2Transform> wheelTransforms);
+            FixedWheelModuleSimulation(
+                WheelModuleSimulationConfig config,
+                std::span<b2Transform> wheelTransforms,
+                std::unique_ptr<motor::MotorController> motorController);
 
             FixedWheelModuleSimulation(const FixedWheelModuleSimulation &) = delete;
             FixedWheelModuleSimulation &operator=(const FixedWheelModuleSimulation &) = delete;
@@ -21,6 +29,8 @@ namespace whiplash
 
         private:
             float getOutputTorque();
+
+            std::unique_ptr<motor::MotorController> motorController;
 
             float motorAppliedVoltage = 0.0f;
             float motorStatorCurrent = 0.0f;

@@ -5,8 +5,8 @@ namespace whiplash
     namespace drivetrain
     {
 
-        DrivetrainSimulation::DrivetrainSimulation(b2WorldId world, DrivetrainSimulationConfig config, b2WorldTransform initialTransform)
-            : config(config)
+        DrivetrainSimulation::DrivetrainSimulation(b2WorldId world, DrivetrainSimulationConfig &&config, b2WorldTransform initialTransform)
+            : config(std::move(config))
         {
             b2BodyDef bodyDef = b2DefaultBodyDef();
             bodyDef.type = b2BodyType::b2_dynamicBody;

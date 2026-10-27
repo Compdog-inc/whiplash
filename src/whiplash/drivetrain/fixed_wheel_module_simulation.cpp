@@ -11,8 +11,12 @@ namespace whiplash
     namespace drivetrain
     {
 
-        FixedWheelModuleSimulation::FixedWheelModuleSimulation(WheelModuleSimulationConfig config, std::span<b2Transform> wheelTransforms)
-            : WheelModuleSimulation(config, wheelTransforms)
+        FixedWheelModuleSimulation::FixedWheelModuleSimulation(
+            WheelModuleSimulationConfig config,
+            std::span<b2Transform> wheelTransforms,
+            std::unique_ptr<motor::MotorController> motorController)
+            : WheelModuleSimulation(config, wheelTransforms),
+              motorController(std::move(motorController))
         {
         }
 
@@ -46,8 +50,17 @@ namespace whiplash
                     anyWheelSkidding = true;
                 }
 
-                float lateralDamping = 500.0f;
-                float forceY = -std::clamp(lateralDamping * localVelocity.y, -maxGripForceY, maxGripForceY);
+                float slipThreshold = 0.005f;
+                float forceY;
+                if (std::abs(localVelocity.y) > slipThreshold)
+                {
+                    forceY = std::copysign(maxGripForceY, -localVelocity.y);
+                }
+                else
+                {
+                    float lateralStiffness = 10000.0f;
+                    forceY = std::clamp(-lateralStiffness * localVelocity.y, -maxGripForceY, maxGripForceY);
+                }
 
                 accumulatedWheelSpeedFromGround += localVelocity.x / config.wheelRadiusMeters;
 
@@ -75,7 +88,11 @@ namespace whiplash
 
         float FixedWheelModuleSimulation::getOutputTorque()
         {
-            motorAppliedVoltage = 12.0f; // trust
+            motorAppliedVoltage = motorController->updateControlSignal(
+                wheelPosition,
+                wheelSpeed,
+                wheelPosition * config.gearRatio,
+                wheelSpeed * config.gearRatio);
 
             motorStatorCurrent = config.motorConfig.calculateCurrent(wheelSpeed, motorAppliedVoltage);
 

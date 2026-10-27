@@ -11,7 +11,7 @@ namespace whiplash
         class DifferentialDrivetrainSimulation : public DrivetrainSimulation
         {
         public:
-            DifferentialDrivetrainSimulation(b2WorldId world, DrivetrainSimulationConfig config, b2WorldTransform initialTransform);
+            DifferentialDrivetrainSimulation(b2WorldId world, DrivetrainSimulationConfig &&config, b2WorldTransform initialTransform);
 
             DifferentialDrivetrainSimulation(const DifferentialDrivetrainSimulation &) = delete;
             DifferentialDrivetrainSimulation &operator=(const DifferentialDrivetrainSimulation &) = delete;

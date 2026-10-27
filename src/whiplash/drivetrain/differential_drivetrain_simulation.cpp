@@ -5,18 +5,23 @@ namespace whiplash
     namespace drivetrain
     {
 
-        DifferentialDrivetrainSimulation::DifferentialDrivetrainSimulation(b2WorldId world, DrivetrainSimulationConfig config, b2WorldTransform initialTransform)
-            : DrivetrainSimulation(world, config, initialTransform)
+        DifferentialDrivetrainSimulation::DifferentialDrivetrainSimulation(b2WorldId world, DrivetrainSimulationConfig &&config, b2WorldTransform initialTransform)
+            : DrivetrainSimulation(world, std::move(config), initialTransform)
         {
             b2Body_SetLinearDamping(bodyId, 1.4f);
             b2Body_SetAngularDamping(bodyId, 1.4f);
 
-            std::span<b2Transform> wheelTransformsSpan(config.wheelTransforms);
+            std::span<b2Transform> wheelTransformsSpan(this->config.wheelTransforms);
             size_t wheelTransformIndex = 0;
-            for (size_t i = 0; i < config.moduleConfigs.size(); ++i)
+            for (size_t i = 0; i < this->config.moduleConfigs.size(); ++i)
             {
-                wheelModules.emplace_back(config.moduleConfigs[i], wheelTransformsSpan.subspan(wheelTransformIndex, config.moduleConfigs[i].numWheels));
-                wheelTransformIndex += config.moduleConfigs[i].numWheels;
+                wheelModules.emplace_back(
+                    this->config.moduleConfigs[i],
+                    wheelTransformsSpan.subspan(
+                        wheelTransformIndex,
+                        this->config.moduleConfigs[i].numWheels),
+                    std::move(this->config.motorControllers[i]));
+                wheelTransformIndex += this->config.moduleConfigs[i].numWheels;
             }
         }
 
