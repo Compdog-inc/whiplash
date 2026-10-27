@@ -22,8 +22,6 @@ namespace whiplash
             void simulationSubTick(int subTickNum) override;
 
         private:
-            void applyFrictionForce();
-            void applyFrictionTorque();
             void applyModuleForces();
 
             std::vector<FixedWheelModuleSimulation> wheelModules;

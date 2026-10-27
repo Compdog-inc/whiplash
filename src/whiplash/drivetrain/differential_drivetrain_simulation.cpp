@@ -27,17 +27,7 @@ namespace whiplash
 
         void DifferentialDrivetrainSimulation::simulationSubTick(int subTickNum)
         {
-            applyFrictionForce();
-            applyFrictionTorque();
             applyModuleForces();
-        }
-
-        void DifferentialDrivetrainSimulation::applyFrictionForce()
-        {
-        }
-
-        void DifferentialDrivetrainSimulation::applyFrictionTorque()
-        {
         }
 
         void DifferentialDrivetrainSimulation::applyModuleForces()
