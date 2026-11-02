@@ -5,12 +5,16 @@ namespace whiplash
 {
     namespace motor
     {
-        DCMotor::DCMotor(float nominalVoltage, float stallTorque, float stallCurrent, float freeCurrent, float freeSpeed)
-            : nominalVoltage(nominalVoltage), stallTorque(stallTorque), stallCurrent(stallCurrent), freeCurrent(freeCurrent), freeSpeed(freeSpeed)
+        DCMotor::DCMotor(float nominalVoltage, float stallTorque, float stallCurrent, float freeCurrent, float freeSpeed, int numMotors)
+            : nominalVoltage(nominalVoltage),
+              stallTorque(stallTorque * numMotors),
+              stallCurrent(stallCurrent * numMotors),
+              freeCurrent(freeCurrent * numMotors),
+              freeSpeed(freeSpeed)
         {
-            R = nominalVoltage / stallCurrent;
-            Kv = freeSpeed / (nominalVoltage - R * freeCurrent);
-            Kt = stallTorque / (stallCurrent - freeCurrent);
+            R = nominalVoltage / this->stallCurrent;
+            Kv = freeSpeed / (nominalVoltage - R * this->freeCurrent);
+            Kt = this->stallTorque / (this->stallCurrent - this->freeCurrent);
         }
 
         float DCMotor::getCurrent(float velocity, float voltage) const
@@ -50,7 +54,7 @@ namespace whiplash
 
         namespace DCMotors
         {
-            DCMotor V5_Smart_Motor_11W(V5SmartMotorGearSet gearSet)
+            DCMotor V5_Smart_Motor_11W(int numMotors, V5SmartMotorGearSet gearSet)
             {
                 float reduction;
                 switch (gearSet)
@@ -74,7 +78,8 @@ namespace whiplash
                            0.11083f,                                    // stall torque (Nm)
                            4.686f,                                      // stall current (A)
                            0.13982f,                                    // free current (A)
-                           4352.724f / 60.0f * 2.0f * std::numbers::pi) // free speed (rpm to rad/s)
+                           4352.724f / 60.0f * 2.0f * std::numbers::pi, // free speed (rpm to rad/s)
+                           numMotors)
                     .withReduction(reduction);
             }
         } // namespace DCMotors

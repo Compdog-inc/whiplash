@@ -15,7 +15,7 @@ namespace whiplash
             float Kv;
             float Kt;
 
-            DCMotor(float nominalVoltage, float stallTorque, float stallCurrent, float freeCurrent, float freeSpeed);
+            DCMotor(float nominalVoltage, float stallTorque, float stallCurrent, float freeCurrent, float freeSpeed, int numMotors = 1);
 
             float getCurrent(float velocity, float voltage) const;
             float getCurrent(float torque) const;
@@ -41,7 +41,7 @@ namespace whiplash
                 Blue,
             };
 
-            DCMotor V5_Smart_Motor_11W(V5SmartMotorGearSet gearSet = V5SmartMotorGearSet::None);
+            DCMotor V5_Smart_Motor_11W(int numMotors = 1, V5SmartMotorGearSet gearSet = V5SmartMotorGearSet::None);
         };
 
     } // namespace motor
