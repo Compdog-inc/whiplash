@@ -1,6 +1,7 @@
 #pragma once
 
 #include "whiplash/motor/module_motor_config.h"
+#include "whiplash/cots.h"
 
 namespace whiplash
 {
@@ -14,9 +15,8 @@ namespace whiplash
             float frictionVoltage;
             float wheelRadiusMeters;
 
-            // Anisotropic coefficient of friction, where X is the direction of wheel travel and Y is perpendicular to that direction
-            float coefficientOfFrictionX;
-            float coefficientOfFrictionY;
+            // Anisotropic coefficient of friction
+            cots::cof::COFPair coefficientOfFriction;
 
             // Number of wheels to take, in order, from the wheel transforms (mechanically linked)
             uint8_t numWheels;
@@ -26,15 +26,13 @@ namespace whiplash
                 float gearRatio,
                 float frictionVoltage,
                 float wheelRadiusMeters,
-                float coefficientOfFrictionX,
-                float coefficientOfFrictionY,
+                cots::cof::COFPair coefficientOfFriction,
                 uint8_t numWheels)
                 : motorConfig(motor, gearRatio, frictionVoltage),
                   gearRatio(gearRatio),
                   frictionVoltage(frictionVoltage),
                   wheelRadiusMeters(wheelRadiusMeters),
-                  coefficientOfFrictionX(coefficientOfFrictionX),
-                  coefficientOfFrictionY(coefficientOfFrictionY),
+                  coefficientOfFriction(coefficientOfFriction),
                   numWheels(numWheels)
             {
             }

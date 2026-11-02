@@ -39,8 +39,8 @@ namespace whiplash
 
                 b2Vec2 localVelocity = b2InvRotateVector(wheelRotation, currentWheelGroundWorldVelocities[i]);
 
-                float maxGripForceX = wheelGravityForces[i] * config.coefficientOfFrictionX;
-                float maxGripForceY = wheelGravityForces[i] * config.coefficientOfFrictionY;
+                float maxGripForceX = wheelGravityForces[i] * config.coefficientOfFriction.x;
+                float maxGripForceY = wheelGravityForces[i] * config.coefficientOfFriction.y;
 
                 float forceX = nominalForceX;
                 bool isSkiddingX = std::abs(forceX) > maxGripForceX;
