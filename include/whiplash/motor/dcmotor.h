@@ -15,48 +15,33 @@ namespace whiplash
             float Kv;
             float Kt;
 
-            DCMotor(float nominalVoltage, float stallTorque, float stallCurrent, float freeCurrent, float freeSpeed)
-                : nominalVoltage(nominalVoltage), stallTorque(stallTorque), stallCurrent(stallCurrent), freeCurrent(freeCurrent), freeSpeed(freeSpeed)
-            {
-                R = nominalVoltage / stallCurrent;
-                Kv = freeSpeed / (nominalVoltage - R * freeCurrent);
-                Kt = stallTorque / stallCurrent;
-            }
+            DCMotor(float nominalVoltage, float stallTorque, float stallCurrent, float freeCurrent, float freeSpeed);
 
-            float getCurrent(float velocity, float voltage) const
-            {
-                return -1.0f / Kv / R * velocity + 1.0f / R * voltage;
-            }
+            float getCurrent(float velocity, float voltage) const;
+            float getCurrent(float torque) const;
+            float getTorque(float current) const;
 
-            float getCurrent(float torque) const
-            {
-                return torque / Kt;
-            }
+            float getVoltage(float torque, float velocity) const;
+            float getVelocity(float torque, float voltage) const;
 
-            float getTorque(float current) const
-            {
-                return current * Kt;
-            }
+            DCMotor withReduction(float reduction) const;
+        };
 
-            float getVoltage(float torque, float velocity) const
+        namespace DCMotors
+        {
+            enum class V5SmartMotorGearSet
             {
-                return 1.0f / Kv * velocity + 1.0f / Kt * R * torque;
-            }
+                // Just the internal gear ratio, use when the cartridge gear ratio is included as part of your mechanism ratio
+                None,
+                // 36:1 (100 RPM)
+                Red,
+                // 18:1 (200 RPM)
+                Green,
+                // 6:1 (600 RPM)
+                Blue,
+            };
 
-            float getVelocity(float torque, float voltage) const
-            {
-                return voltage * Kv - 1.0f / Kt * torque * R * Kv;
-            }
-
-            DCMotor withReduction(float reduction) const
-            {
-                return DCMotor(
-                    nominalVoltage,
-                    stallTorque * reduction,
-                    stallCurrent,
-                    freeCurrent,
-                    freeSpeed / reduction);
-            }
+            DCMotor V5_Smart_Motor_11W(V5SmartMotorGearSet gearSet = V5SmartMotorGearSet::None);
         };
 
     } // namespace motor
